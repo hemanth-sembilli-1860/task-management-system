@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.taskmanager.dto.LoginRequest;
 import com.taskmanager.dto.RegisterRequest;
+import com.taskmanager.entity.Role;
 import com.taskmanager.entity.User;
 import com.taskmanager.repository.UserRepository;
 import com.taskmanager.util.Jwtutil;
@@ -23,7 +24,7 @@ public class UserService {
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		user.setRole(request.getRole());
+		user.setRole(Role.USER);
 		return userRepository.save(user);
 	}
 	public List<User> getAllUsers() {
