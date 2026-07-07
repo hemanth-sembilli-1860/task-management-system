@@ -1,6 +1,7 @@
 package com.taskmanager.controller;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,10 @@ import com.taskmanager.entity.Task;
 import com.taskmanager.entity.TaskStatus;
 import com.taskmanager.service.TaskService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
+
+@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
