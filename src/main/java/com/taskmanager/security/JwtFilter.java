@@ -22,30 +22,40 @@ public class JwtFilter extends OncePerRequestFilter{
 	private Jwtutil jwtUtil;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain)
-			throws ServletException,IOException{
-		
-		if (request.getServletPath().startsWith("/swagger-ui") ||
-			    request.getServletPath().startsWith("/v3/api-docs")) {
-			    filterChain.doFilter(request, response);
-			    return;
-			}
-		String authHeader = request.getHeader("Authorization");
-		if (authHeader!=null && authHeader.startsWith("Bearer ")) {
-			String token = authHeader.substring(7);
-			String email = jwtUtil.extractMail(token);
+	protected void doFilterInternal(HttpServletRequest request,
+	                                HttpServletResponse response,
+	                                FilterChain filterChain)
+	        throws ServletException, IOException {
 
-			UsernamePasswordAuthenticationToken authToken =
-			        new UsernamePasswordAuthenticationToken(
-			                email,
-			                null,
-			                Collections.emptyList()
-			        );
+	    if (request.getServletPath().startsWith("/swagger-ui") ||
+	        request.getServletPath().startsWith("/v3/api-docs")) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
-			SecurityContextHolder.getContext().setAuthentication(authToken);
+	    String authHeader = request.getHeader("Authorization");
 
-			System.out.println("Valid token for : " + email);
-		}
-		filterChain.doFilter(request, response);
+	    if (authHeader != null && authHeader.startsWith("Bearer ")) {
+	        try {
+
+	            String token = authHeader.substring(7);
+	            String email = jwtUtil.extractMail(token);
+
+	            UsernamePasswordAuthenticationToken authToken =
+	                    new UsernamePasswordAuthenticationToken(
+	                            email,
+	                            null,
+	                            Collections.emptyList()
+	                    );
+
+	            SecurityContextHolder.getContext().setAuthentication(authToken);
+
+	        } catch (Exception e) {
+	            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+	            return;
+	        }
+	    }
+
+	    filterChain.doFilter(request, response);
 	}
 }

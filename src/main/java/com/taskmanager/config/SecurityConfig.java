@@ -28,12 +28,12 @@ public class SecurityConfig {
 	                "/v3/api-docs",
 	                "/v3/api-docs/**"
 	            ).permitAll()
-	            .anyRequest().permitAll()
+	            .anyRequest().authenticated()
 	        )
 	        .sessionManagement(session ->
 	            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-	        );
-	        //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+	        )
+	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 	    return http.build();
 	}

@@ -1,7 +1,6 @@
 package com.taskmanager.controller;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.taskmanager.dto.TaskRequest;
 import com.taskmanager.entity.Priority;
 import com.taskmanager.entity.Task;
 import com.taskmanager.entity.TaskStatus;
 import com.taskmanager.service.TaskService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 
 
 @SecurityRequirement(name = "Bearer Authentication")
@@ -29,8 +30,8 @@ public class TaskController {
 	@Autowired
 	private TaskService taskService;
 	@PostMapping
-	public Task createTask(@RequestBody Task task,Authentication authentication) {
-		return taskService.createTask(task,authentication.getName());
+	public Task createTask(@Valid @RequestBody TaskRequest request,Authentication authentication) {
+		return taskService.createTask(request,authentication.getName());
 	}
 
 	@GetMapping
@@ -59,7 +60,7 @@ public class TaskController {
 	}
 
 	@PutMapping("/{id}")
-	public Task updateTask(@PathVariable Long id, @RequestBody Task task,Authentication authentication) {
+	public Task updateTask(@PathVariable Long id,@Valid @RequestBody Task task,Authentication authentication) {
 	    return taskService.updateTask(id, task,authentication.getName());
 	}
 	@PatchMapping("/{id}/complete")

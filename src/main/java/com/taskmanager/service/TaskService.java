@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.taskmanager.dto.TaskRequest;
 import com.taskmanager.entity.Priority;
 import com.taskmanager.entity.Task;
 import com.taskmanager.entity.TaskStatus;
@@ -20,20 +21,27 @@ public class TaskService {
 	@Autowired
 	private UserRepository userRepository;
 	private Task validateTaskOwnership(Long taskId,String email) {
-		Task task = taskRepository.findById(taskId).orElseThrow();
+		Task task = taskRepository.findById(taskId)
+		        .orElseThrow(() -> new RuntimeException("Task not found"));
 
 		if (!task.getUser().getEmail().equals(email)) {
 			throw new TaskAccessDeniedException("Access Denied");
 		}
 		return task;
 	}
-	public Task createTask(Task task,String email) {
-		User taskUser = userRepository.findById(task.getUser().getId()).orElseThrow();
-		if (!task.getUser().getEmail().equals(email)) {
-	        throw new TaskAccessDeniedException("Access denied");
-	    }
-		task.setUser(taskUser);
-		return taskRepository.save(task);
+	public Task createTask(TaskRequest request,String email) {
+		User user = userRepository.findByEmail(email).orElseThrow();
+
+	    Task task = new Task();
+
+	    task.setTitle(request.getTitle());
+	    task.setDescription(request.getDescription());
+	    task.setStatus(request.getStatus());
+	    task.setPriority(request.getPriority());
+	    task.setDeadline(request.getDeadline());
+	    task.setUser(user);
+
+	    return taskRepository.save(task);
 	}
 
 	public List<Task> getAllTasks(String email){

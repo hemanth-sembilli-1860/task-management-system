@@ -20,6 +20,9 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	public User registerUser(RegisterRequest request) {
+		if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+		    throw new IllegalStateException("Email already exists");
+		}
 		User user = new User();
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
@@ -31,14 +34,16 @@ public class UserService {
 	    return userRepository.findAll();
 	}
 	public User getUserById(Long id) {
-	    return userRepository.findById(id).orElse(null);
+		return userRepository.findById(id)
+		        .orElseThrow(() -> new RuntimeException("User not found"));
 	}
 	@Autowired
 	private Jwtutil jwtUtil;
 	public String loginUser(LoginRequest request) {
-		User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+		User user = userRepository.findByEmail(request.getEmail())
+		        .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-			throw new RuntimeException("Invalid password");
+		    throw new IllegalArgumentException("Invalid email or password");
 		}
 		return jwtUtil.generateToken(request.getEmail());
 	}
