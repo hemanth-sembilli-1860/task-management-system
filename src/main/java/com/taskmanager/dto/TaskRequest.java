@@ -5,12 +5,19 @@ import java.time.LocalDateTime;
 import com.taskmanager.entity.Priority;
 import com.taskmanager.entity.TaskStatus;
 
-public class TaskRequest {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+public class TaskRequest {
+	@NotBlank
     private String title;
+	@NotBlank
     private String description;
+	@NotNull
     private TaskStatus status;
+	@NotNull
     private Priority priority;
+	@NotNull
     private LocalDateTime deadline;
 	public String getTitle() {
 		return title;

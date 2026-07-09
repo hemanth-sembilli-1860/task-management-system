@@ -11,6 +11,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.taskmanager.security.JwtFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 public class SecurityConfig {
 	@Autowired
@@ -33,6 +35,11 @@ public class SecurityConfig {
 	        .sessionManagement(session ->
 	            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	        )
+	        .exceptionHandling(ex -> ex
+	        	    .authenticationEntryPoint((request, response, authException) -> {
+	        	        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+	        	    })
+	        	)
 	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 	    return http.build();

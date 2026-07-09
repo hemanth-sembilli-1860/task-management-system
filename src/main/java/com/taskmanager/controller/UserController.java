@@ -19,13 +19,15 @@ import com.taskmanager.dto.UserResponse;
 import com.taskmanager.entity.User;
 import com.taskmanager.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 	@Autowired
 	private UserService userService;
 	@PostMapping("/register")
-	public UserResponse registerUser(@RequestBody RegisterRequest request) {
+	public UserResponse registerUser(@Valid @RequestBody RegisterRequest request) {
 		User user = userService.registerUser(request);
 	    return new UserResponse(
 	    		user.getId(),
@@ -50,7 +52,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public AuthResponse loginUser(@RequestBody LoginRequest request) {
+	public AuthResponse loginUser(@Valid @RequestBody LoginRequest request) {
 		String token = userService.loginUser(request);
 		return new AuthResponse(token);
 	}
