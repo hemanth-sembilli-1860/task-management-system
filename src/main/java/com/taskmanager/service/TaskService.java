@@ -73,14 +73,14 @@ public class TaskService {
 	}
 
 
-	public Task updateTask(Long id, Task updatedTask,String email) {
+	public Task updateTask(Long id, TaskRequest request,String email) {
 	    Task task = validateTaskOwnership(id, email);
 
-	    task.setTitle(updatedTask.getTitle());
-	    task.setDescription(updatedTask.getDescription());
-	    task.setStatus(updatedTask.getStatus());
-	    task.setPriority(updatedTask.getPriority());
-	    task.setDeadline(updatedTask.getDeadline());
+	    task.setTitle(request.getTitle());
+	    task.setDescription(request.getDescription());
+	    task.setStatus(request.getStatus());
+	    task.setPriority(request.getPriority());
+	    task.setDeadline(request.getDeadline());
 
 	    return taskRepository.save(task);
 	}

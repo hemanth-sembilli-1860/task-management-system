@@ -60,8 +60,8 @@ public class TaskController {
 	}
 
 	@PutMapping("/{id}")
-	public Task updateTask(@PathVariable Long id,@Valid @RequestBody Task task,Authentication authentication) {
-	    return taskService.updateTask(id, task,authentication.getName());
+	public Task updateTask(@PathVariable Long id,@Valid @RequestBody TaskRequest request,Authentication authentication) {
+	    return taskService.updateTask(id, request,authentication.getName());
 	}
 	@PatchMapping("/{id}/complete")
 	public Task markTaskComplete(@PathVariable Long id,Authentication authentication) {
