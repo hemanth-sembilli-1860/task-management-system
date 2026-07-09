@@ -140,35 +140,35 @@ src/main/java/com/taskmanager
 
 ### Swagger Documentation
 
-![Swagger](screenshots/swagger-home.png)
+![Swagger](Screenshots/swagger-home.png)
 
 ### User Registration
 
-![Register](screenshots/register.png)
+![Register](Screenshots/register.png)
 
 ### User Login (JWT)
 
-![Login](screenshots/login.png)
+![Login](Screenshots/login.png)
 
 ### JWT Authorization
 
-![Authorize](screenshots/authorize.png)
+![Authorize](Screenshots/authorize.png)
 
 ### Create Task
 
-![Create Task](screenshots/create-task.png)
+![Create Task](Screenshots/create-task.png)
 
 ### View Personal Tasks
 
-![Get Tasks](screenshots/get-tasks.png)
+![Get Tasks](Screenshots/get-tasks.png)
 
 ### Validation Example
 
-![Validation](screenshots/validation.png)
+![Validation](Screenshots/validation.png)
 
 ### Render Deployment
 
-![Render](screenshots/render.png)
+![Render](Screenshots/render.png)
 
 ---
 
